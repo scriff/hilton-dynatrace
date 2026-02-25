@@ -15,7 +15,7 @@ fetch logs //, scanLimitGBytes: 500, samplingRatio: 1000
 | fields Message
 </code>
 
-# *AVS qwuery for messages_*
+# *_AVS qwuery for messages_*
 
 <code>
 fetch logs //, scanLimitGBytes: 500, samplingRatio: 1000
@@ -29,4 +29,21 @@ fetch logs //, scanLimitGBytes: 500, samplingRatio: 1000
 | filter matchesValue(container_name, "dzd-avsfltcmd-service-qa")
 | fieldsAdd Message = jsonField(content, "Message")
 | fields timestamp, Message, container_id
+</code>
+
+
+# *_Devops_*
+
+<code>
+fetch logs /
+fetch logs //, scanLimitGBytes: 500, samplingRatio: 1000
+| filter contains(applicationci,"dzd") //and matchesphrase(container_name,"indraw") //and not matchesPhrase(content,"] info    [")
+| filter container_name == "dzd-avsfltcmd-service-stg"
+//| filter loglevel == "INFO"
+| filter aws.region == "us-east-1"
+|  filter contains(content, "degraded")
+//| filter loglevel == "NONE"
+| fieldsadd ename = toarray(container_name)
+| lookup [ fetch dt.entity.service, from:-60m ], sourceField: ename, lookupField:applicationName, fields:{ applicationReleaseVersion}
+| fieldsRemove ename
 </code>
