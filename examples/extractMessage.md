@@ -47,3 +47,15 @@ fetch logs //, scanLimitGBytes: 500, samplingRatio: 1000
 | lookup [ fetch dt.entity.service, from:-60m ], sourceField: ename, lookupField:applicationName, fields:{ applicationReleaseVersion}
 | fieldsRemove ename
 </code>
+
+# *_Solace Issues_*
+fetch logs, scanLimitGBytes: 1500 //, samplingRatio: 1000
+| filter matchesValue(env, "stg")
+| filter matchesValue(applicationci, "dzd")
+//|  filter contains(content, "common.solace")
+|  filter contains(content, "SOLCLIENT") 
+|  filer contains(content, "session_disconnected_event") 
+|  filter contains(content, "Connection has been idle for")
+//| filter matchesValue(container_name, "dzd-schedmaint-adapter-stg")
+//|  filter matchesValue(container_id, "2b1ccd5082d946b49f4464db8cee39d9-1254064001")
+| filter matchesValue(container_name, "dzd-avsrequest-adapter-stg")
