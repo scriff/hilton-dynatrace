@@ -49,6 +49,7 @@ fetch logs //, scanLimitGBytes: 500, samplingRatio: 1000
 </code>
 
 # *_Solace Issues_*
+<code>
 fetch logs, scanLimitGBytes: 1500 //, samplingRatio: 1000
 | filter matchesValue(env, "stg")
 | filter matchesValue(applicationci, "dzd")
@@ -59,3 +60,4 @@ fetch logs, scanLimitGBytes: 1500 //, samplingRatio: 1000
 //| filter matchesValue(container_name, "dzd-schedmaint-adapter-stg")
 //|  filter matchesValue(container_id, "2b1ccd5082d946b49f4464db8cee39d9-1254064001")
 | filter matchesValue(container_name, "dzd-avsrequest-adapter-stg")
+</code>
