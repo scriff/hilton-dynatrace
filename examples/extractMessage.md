@@ -15,20 +15,26 @@ fetch logs //, scanLimitGBytes: 500, samplingRatio: 1000
 | fields Message
 </code>
 
-# *_AVS qwuery for messages_*
+# *_AVS qwery for messages_*
 
 <code>
 fetch logs //, scanLimitGBytes: 500, samplingRatio: 1000
-| sort timestamp desc
 | filter matchesValue(env, "qa")
 | filter matchesValue(applicationci, "dzd")
 //| filter matchesValue(loglevel, "INFO")
-| filter contains(content, "solace")
+//| filter contains(content, "unhealthy")
 //| filter contains(content, "solace")
-//| filter contains(content, "8f2b70b8a2076de2")
+//| filter matchesValue(container_id, "5038e5b99370467da513097221010142-1930243009")
+| filter not contains(content, "Response Log") and 
+	     not contains(content, "Request Log") and 
+	     not contains(content, "DRAIN_MODE: Rejecting") and
+	     not contains(content, "Time taken to publish flight data patch message to UDH") and
+	     not contains(content, "Queue depth healthy")
 | filter matchesValue(container_name, "dzd-avsfltcmd-service-qa")
 | fieldsAdd Message = jsonField(content, "Message")
-| fields timestamp, Message, container_id
+| fields timestamp, content, container_id
+| sort timestamp desc
+
 </code>
 
 
