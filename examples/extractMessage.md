@@ -15,7 +15,7 @@ fetch logs //, scanLimitGBytes: 500, samplingRatio: 1000
 | fields Message
 </code>
 
-# *_AVS qwery for messages_*
+# *_AVS query for messages_*
 
 <code>
 fetch logs //, scanLimitGBytes: 500, samplingRatio: 1000
