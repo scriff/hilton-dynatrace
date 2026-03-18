@@ -35,8 +35,23 @@ fetch logs //, scanLimitGBytes: 500, samplingRatio: 1000
 | fields timestamp, content, container_id
 | sort timestamp desc
 
+# *_example with a specific value to parse out_*
 </code>
+fetch logs ,scanLimitGBytes: 1500
+| filter matchesValue(env, "qa")
+| filter matchesValue(applicationci, "dzd")
+| fieldsAdd Message = jsonField(content, "Message")
+| parse Message, """LD SPACE? ':' SPACE? [0-9.]+:publish_ms_str SPACE? "ms"""" , preserveFieldsOnFailure: true
+| fieldsAdd publish_ms = toDouble(publish_ms_str)
+| filter publish_ms > 50 or isNull(publish_ms)
+| filter matchesValue(container_name, "dzd-avsfltcmd-service-qa")
+| filter contains(container_id, "cba5edc017a94ff195825539dde88487")
+| filterOut contains(content, "Request Log") 
+| filterOut contains(content, "Response Log")
+| fields timestamp, Message, publish_ms,  container_id, content
+| sort timestamp asc
 
+<code>
 
 # *_Devops_*
 
