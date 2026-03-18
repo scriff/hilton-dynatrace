@@ -34,9 +34,11 @@ fetch logs //, scanLimitGBytes: 500, samplingRatio: 1000
 | fieldsAdd Message = jsonField(content, "Message")
 | fields timestamp, content, container_id
 | sort timestamp desc
+</code>
 
 # *_example with a specific value to parse out_*
-</code>
+
+<code>
 fetch logs ,scanLimitGBytes: 1500
 | filter matchesValue(env, "qa")
 | filter matchesValue(applicationci, "dzd")
@@ -51,7 +53,7 @@ fetch logs ,scanLimitGBytes: 1500
 | fields timestamp, Message, publish_ms,  container_id, content
 | sort timestamp asc
 
-<code>
+</code>
 
 # *_Devops_*
 
